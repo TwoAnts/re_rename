@@ -27,7 +27,7 @@ def parse_config():
     config_note = \
 '''# -*- coding:utf-8 -*-
 #Please fill this file first.
-#The file's charset should be utf-8.
+#This file's charset should be utf-8.
 #
 #OS_CHARSET: Charset of the os. For example, if you use it on windows in Chinese, use 'gbk'. 
 #WORK_DIR: The dir contains the rename files.
