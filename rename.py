@@ -26,6 +26,7 @@ def FULL_PATH(fname):
 def parse_config():
     config_note = \
 '''# -*- coding:utf-8 -*-
+
 #Please fill this file first.
 #This file's charset should be utf-8.
 #
@@ -35,9 +36,12 @@ def parse_config():
 #             Please use (?P<name>) to specific the file name.
 #DST_PATTERN: The fname's re pattern for getting the dst file in WORK_DIR.
 #             Please use (?P<ext>) to specific the file name suffix. 
+#The final file name will be '<name><ext>'
+#
 #KEY_COLLECT: Declare the key in KEY_PATTERN, e.g. key1,key2,key3
 #SRC_KEY_PATTERN: The fname's re pattern to get the compare key of src file.
 #DST_KEY_PATTERN: The fname's re pattern to get the compare key of dst file.
+
 '''
     
     config = SafeConfigParser({k:'' for k in [
