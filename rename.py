@@ -98,6 +98,7 @@ def run_rename():
     src_dict = {}
     dst_dict = {}
     todo_list = []
+    dst_file_num = 0
     for fname in flist:
         #print 'test %s' %fname
         m = SRC_PATTERN.match(fname)
@@ -113,16 +114,19 @@ def run_rename():
             dst_key = get_dst_key(fname)
             if not dst_key: continue
             #print 'dst_key %s' %dst_key
-            dst_dict[dst_key] = (fname, m.group('ext'))
+            dst_dict.setdefault(dst_key, [])
+            dst_dict[dst_key].append((fname, m.group('ext')))
+            dst_file_num += 1
        
-    print 'Found %s src file, %s dst file.' %(len(src_dict), len(dst_dict))
+    print 'Found %s src file, %s dst file.' %(len(src_dict), dst_file_num)
     if len(src_dict) == 0 and len(dst_dict) == 0:
         print 'No file found, please modify PATTERN and KEY_PATTERN.'
         exit()
         
     for k,v in src_dict.iteritems():
         if k in dst_dict:
-            todo_list.append((v[0], dst_dict[k][0], v[1] + dst_dict[k][1]))
+            for fname, ext in dst_dict[k]:
+                todo_list.append((v[0], fname, v[1] + ext))
             
     todo_list.sort(key=lambda e: e[0])
     
@@ -132,16 +136,22 @@ def run_rename():
     if not todo_list: 
         print 'No file to rename.'
         exit()
+    print 'File name no change will be skipped.'
     msg = raw_input('rename %s files?(Y/n) ' %len(todo_list))
     
     if msg not in ('Y', 'y'): return
     
+    done = 0
     for data in todo_list:
-        print 'rename %s \nto %s\n' %(FULL_PATH(data[1]).encode(OS_CHARSET),
+        skip = '[skipped] '  if data[1] == data[2] else '' # if name no change, skip.
+        print '%srename %s \nto %s\n' %(skip,
+                                        FULL_PATH(data[1]).encode(OS_CHARSET),
                                         FULL_PATH(data[2]).encode(OS_CHARSET))
+        if skip: continue
         os.rename(FULL_PATH(data[1]).encode(OS_CHARSET), FULL_PATH(data[2]).encode(OS_CHARSET))
+        done += 1
         
-    print 'Done!'
+    print 'Done! Total:%s Skipped:%s Rename:%s.' %(len(todo_list), len(todo_list) - done, done)
     
 if __name__ == '__main__':
     parse_config()
