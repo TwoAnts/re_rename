@@ -106,7 +106,7 @@ class Application:
         self.key_collect_entry.grid(row=2, column=3, sticky=W)
         Label(self.pattern_frame, text='OS charset:').grid(row=2, column=0)
         self.charset_entry.grid(row=2, column=1, sticky=W)
-        #self.charset_entry.config(state='disabled')
+        self.charset_entry.config(state='disabled')
         
         self.log_frame = Frame(self.root, bd=2.5)
         self.log_frame.pack(fill=X)
