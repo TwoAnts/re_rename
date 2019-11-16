@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 #-*- coding:utf-8 -*-
 
 import os
@@ -6,11 +6,11 @@ import sys
 import io
 import re
 import traceback
-from ConfigParser import SafeConfigParser
-from Tkinter import *
-from ScrolledText import ScrolledText
-import tkFileDialog
-from tkFont import Font
+from configparser import SafeConfigParser
+from tkinter import *
+from tkinter.scrolledtext import ScrolledText
+import tkinter.filedialog
+from tkinter.font import Font
 
 CF_NAME = 'config.txt'
 CUR_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -36,30 +36,25 @@ class Application:
         for item in self.CONFIG_ITEMS:
             value = getattr(self, item).get()
             self.config.set('DEFAULT', item, value)
-        with open(CF_PATH, 'w') as cf:
+        with open(CF_PATH, 'w', encoding='utf-8') as cf:
             self.config.write(cf)
     
     def load_config(self):
         if not os.path.isfile(CF_PATH):
             self.save_config()
 
-        self.config.read(CF_PATH)
+        self.config.read(CF_PATH, encoding='utf-8')
         for item in self.CONFIG_ITEMS:
             value = self.config.get('DEFAULT', item)
             if not value:
                 value = self.CONFIG_ITEM_DEFAULT_VALS.get(item, '')
-            if isinstance(value, bytes):
-                value = value.decode(sys.getdefaultencoding())
             getattr(self, item).set(value)
-            
-        if not self.os_charset.get():
-            self.os_charset.set(sys.getdefaultencoding())
     
     def on_exit(self):
         try:
             self.save_config()
         except:
-            print(traceback.format_exc())
+            print((traceback.format_exc()))
         finally:
             self.root.after(1, self.root.destroy)
     
@@ -153,7 +148,7 @@ class Application:
     def msg_print_x(self, msg_list, end='\n'):
         self.log_text.configure(state='normal')
         for msg in msg_list:
-            if isinstance(msg, basestring):
+            if isinstance(msg, str):
                 self.log_text.insert(END, msg)
             else:
                 text, tags = msg
@@ -162,7 +157,7 @@ class Application:
         self.log_text.configure(state='disabled')
         
     def select_work_dir(self):
-        work_dir = tkFileDialog.askdirectory() #get unicode string here.
+        work_dir = tkinter.filedialog.askdirectory() #get unicode string here.
         if work_dir:
             self.work_dir.set(work_dir)
             
@@ -216,11 +211,10 @@ class Application:
         if not self.check_vars():
             return
         
-        os_charset = self.os_charset.get()
         work_dir = self.work_dir.get()
         src_pattern = re.compile(self.src_pattern.get())
         dst_pattern = re.compile(self.dst_pattern.get())
-        flist = os.listdir(work_dir.encode(os_charset))
+        flist = os.listdir(work_dir)
         for fname in flist:
             #print 'test %s' %fname
             m = src_pattern.match(fname)
@@ -255,7 +249,7 @@ class Application:
             self.msg_print_x(msg_list)
             return 
             
-        for k,v in self.src_dict.iteritems():
+        for k,v in self.src_dict.items():
             if k in self.dst_dict:
                 for fname, ext in self.dst_dict[k]:
                     self.todo_list.append((v[0], fname, v[1] + ext))
@@ -291,7 +285,6 @@ class Application:
         self.run_button.configure(state='disabled')
         self.msg_clear()
         
-        os_charset = self.os_charset.get()
         work_dir = self.work_dir.get()
         if not self.check_vars():
             return
@@ -306,7 +299,7 @@ class Application:
             return
         
         pattern = re.compile(_pattern)
-        flist = os.listdir(work_dir.encode(os_charset))
+        flist = os.listdir(work_dir)
         counter = 0
         for fname in flist:
             if pattern.match(fname):
@@ -321,13 +314,12 @@ class Application:
         self.log_text.focus()
         
     def _run_handler(self):
-        os_charset = self.os_charset.get()
         self.msg_clear()
         
         done = 0
         for data in self.todo_list:
-            path_old = self.get_full_path(data[1]).encode(os_charset)
-            path_new = self.get_full_path(data[2]).encode(os_charset)
+            path_old = self.get_full_path(data[1])
+            path_new = self.get_full_path(data[2])
             if data[1] == data[2]:
                 self.msg_print_x((
                     ('[skipped]', ('red', )),
