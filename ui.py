@@ -359,6 +359,7 @@ class Application:
         
     def on_work_dir_changed(self):
         if self.old_work_dir != self.work_dir.get():
+            self.old_work_dir = self.work_dir.get()
             self.run_button.config(state='disabled')
             self.reset_vars()
             self.msg_clear()
