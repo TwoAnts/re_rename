@@ -70,7 +70,7 @@ class Application:
         self.key_collect = StringVar()
         self.os_charset = StringVar()
         
-        self.entry_frame = Frame(self.root, width=30, bd=2.5)
+        self.entry_frame = Frame(self.root, width=70, bd=2.5)
         self.entry_frame.pack(fill=X, side=TOP)
         
         self.work_dir_frame = Frame(self.entry_frame, bd=0)
@@ -86,15 +86,15 @@ class Application:
         self.pattern_frame = Frame(self.entry_frame, bd=0)
         self.pattern_frame.pack(fill=X, side=TOP)
         
-        self.src_pattern_entry = Entry(self.pattern_frame, width=40, textvariable=self.src_pattern)
-        self.dst_pattern_entry = Entry(self.pattern_frame, width=40, textvariable=self.dst_pattern)
+        self.src_pattern_entry = Entry(self.pattern_frame, width=60, textvariable=self.src_pattern)
+        self.dst_pattern_entry = Entry(self.pattern_frame, width=60, textvariable=self.dst_pattern)
         Label(self.pattern_frame, text='Src pattern:').grid(row=0, column=0)
         self.src_pattern_entry.grid(row=0, column=1)
         Label(self.pattern_frame, text='Dst pattern:').grid(row=1, column=0)
         self.dst_pattern_entry.grid(row=1, column=1)
         
-        self.src_key_pattern_entry = Entry(self.pattern_frame, width=40, textvariable=self.src_key_pattern)
-        self.dst_key_pattern_entry = Entry(self.pattern_frame, width=40, textvariable=self.dst_key_pattern)
+        self.src_key_pattern_entry = Entry(self.pattern_frame, width=70, textvariable=self.src_key_pattern)
+        self.dst_key_pattern_entry = Entry(self.pattern_frame, width=70, textvariable=self.dst_key_pattern)
         Label(self.pattern_frame, text='Src key pattern:').grid(row=0, column=2)
         self.src_key_pattern_entry.grid(row=0, column=3)
         Label(self.pattern_frame, text='Dst key pattern:').grid(row=1, column=2)
