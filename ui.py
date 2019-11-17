@@ -214,8 +214,10 @@ class Application:
         work_dir = self.work_dir.get()
         src_pattern = re.compile(self.src_pattern.get())
         dst_pattern = re.compile(self.dst_pattern.get())
-        flist = os.listdir(work_dir)
-        for fname in flist:
+        for de in os.scandir(work_dir):
+            if not de.is_file():
+                continue
+            fname = de.name
             #print 'test %s' %fname
             m = src_pattern.match(fname)
             if m: 
@@ -301,7 +303,10 @@ class Application:
         pattern = re.compile(_pattern)
         flist = os.listdir(work_dir)
         counter = 0
-        for fname in flist:
+        for de in os.scandir(work_dir):
+            if not de.is_file():
+                continue
+            fname = de.name
             if pattern.match(fname):
                 counter += 1
                 self.msg_print_x((
@@ -352,6 +357,13 @@ class Application:
     def run_handler(self):
         self._run_handler()
         
+    def on_work_dir_changed(self):
+        if self.old_work_dir != self.work_dir.get():
+            self.run_button.config(state='disabled')
+            self.reset_vars()
+            self.msg_clear()
+        return True
+        
     def bind_action(self):
         self.root.protocol('WM_DELETE_WINDOW', self.on_exit)
         self.work_dir_button.config(command=self.select_work_dir)
@@ -359,6 +371,8 @@ class Application:
         self.dst_match_button.config(command=self.dst_match_handler)
         self.list_todo_button.config(command=self.list_todo_handler)
         self.run_button.config(command=self.run_handler)
+        self.work_dir_entry.config(validate='focusout', validatecommand=self.on_work_dir_changed)
+        self.old_work_dir = self.work_dir.get()
 
     def __init__(self, root):
         self.root = root
