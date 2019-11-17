@@ -372,7 +372,7 @@ class Application:
         self.dst_match_button.config(command=self.dst_match_handler)
         self.list_todo_button.config(command=self.list_todo_handler)
         self.run_button.config(command=self.run_handler)
-        self.work_dir_entry.config(validate='focusout', validatecommand=self.on_work_dir_changed)
+        self.work_dir_entry.config(validate='key', validatecommand=self.on_work_dir_changed)
         self.old_work_dir = self.work_dir.get()
 
     def __init__(self, root):
