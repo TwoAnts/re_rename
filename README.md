@@ -16,10 +16,10 @@ More details may be found in config.ini.
 Just execute `python3 ui.py`.  
 
 1. Fill the blank entry  
-2. Click button __ Src match __, to list the matched video files.  
-3. Click button __ Dst match __, to list the matched subtitle files.  
-4. Click button __ List Todo __, to list the rename actions to do.  
-5. Click button __ Run __, to do the rename actions.  
+2. Click button __Src match__, to list the matched video files.  
+3. Click button __Dst match__, to list the matched subtitle files.  
+4. Click button __List Todo__, to list the rename actions to do.  
+5. Click button __Run__, to do the rename actions.  
 
 ### options ###
 * `src pattern`: match the video files. Use the group name `(?P<name>)` to specify the subtitle's name  
