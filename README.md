@@ -15,6 +15,28 @@ More details may be found in config.ini.
 ### ui.py ###
 Just execute `python3 ui.py`.  
 
+1. Fill the blank entry  
+2. Click button __ Src match __, to list the matched video files.  
+3. Click button __ Dst match __, to list the matched subtitle files.  
+4. Click button __ List Todo __, to list the rename actions to do.  
+5. Click button __ Run __, to do the rename actions.  
+
+### options ###
+* `src pattern`: match the video files. Use the group name `(?P<name>)` to specify the subtitle's name  
+* `dst pattern`: match the subtitle files. Use the group name`(?P<ext>)` to specify the subtitle's ext  
+* `src key pattern`: the regex pattern for key in video's filename. Use the group name`(?P<key>)` to specify the key  
+* `dst key pattern`: the regex pattern for key in subtitle's filename. Use the group name`(?P<key>)` to specify the key  
+* `key collect`: the match key collect. You can use multiple keys as one key for match  
+
+For example,  
+```
+src pattern: (?P<name>.+)\.(mp4|mkv|avi)
+dst pattern: .+chs(?P<ext>\.(ass|ssa|srt))
+key collect: key1,key2,suffix
+src key pattern: (?P<key1>\d{2})xxx(?P<key2>\w+)-(?P<suffix>\w+)
+dst key pattern: (?P<key1>\d{2})---(?P<suffix>\w+)xxx(?P<key2>\w+)
+```
+
 
 
 
